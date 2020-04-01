@@ -4,40 +4,103 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Form Validator</title>
+	<title>电影座位预定</title>
 	<link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
-<div class="container">
-	<form id="form" class="form">
-		<h2>注册</h2>
-		<div class="form-control">
-			<label for="username">用户名</label>
-			<input type="text" id="username" placeholder="请输入用户名">
-			<small>错误提示</small>
-		</div>
+	<h1>电影座位预定</h1>
+	<div class="moviv-container">
+		<label>选择影片：</label>
+		<select id="movie">
+			<option value="32">寄生虫 (票价：32元)</option>
+			<option value="35">小丑 (票价：35元)</option>
+			<option value="38">好莱坞往事 (票价：38元)</option>
+			<option value="30">玩具总动员4 (票价：30元)</option>
+		</select>
+	</div>
+	<ul class="showCase">
+		<li>
+			<div class="seat"></div>
+			<small>可选</small>
+		</li>
+		<li>
+			<div class="seat selected"></div>
+			<small>已选</small>
+		</li>
+		<li>
+			<div class="seat occupied"></div>
+			<small>不可选</small>
+		</li>
+	</ul>
+	<div class="container">
+		<div class="screen"></div>
 		
-		<div class="form-control">
-			<label for="email">邮箱</label>
-			<input type="text" id="email" placeholder="请输入邮箱地址">
-			<small>错误提示</small>
+		<!-- 座位 -->
+		<div class="row">
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
 		</div>
-		
-		<div class="form-control">
-			<label for="password">密码</label>
-			<input type="password" id="password" placeholder="请输入密码">
-			<small>错误提示</small>
+		<div class="row">
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat occupied"></div>
+			<div class="seat occupied"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
 		</div>
-		
-		<div class="form-control">
-			<label for="password2">确认密码</label>
-			<input type="password" id="password2" placeholder="请再次输入密码">
-			<small>错误提示</small>
+		<div class="row">
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat occupied"></div>
+			<div class="seat occupied"></div>
 		</div>
-		
-		<button type="submit">提交</button>
-	</form>
-</div>
+		<div class="row">
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+		</div>
+		<div class="row">
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat occupied"></div>
+			<div class="seat occupied"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+		</div>
+		<div class="row">
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat"></div>
+			<div class="seat occupied"></div>
+			<div class="seat occupied"></div>
+			<div class="seat occupied"></div>
+			<div class="seat"></div>
+		</div>
+	</div>
+	
+	<p class="text">
+		您已选择了: <span id="count">0</span>个座位，总计票价: <span id="total">0</span>元
+	</p>
 </body>
 <script src="index.js" type="text/javascript" charset="utf-8"></script>
 </html>

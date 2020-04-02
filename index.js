@@ -1,63 +1,56 @@
-// 获取dom
-const seats = document.querySelectorAll('.row .seat:not(.occupied)')
-const container = document.querySelector('.container')
-const count = document.getElementById('count')
-const total = document.getElementById('total')
-const movieSelect = document.getElementById('movie')
-let movieIndex = 0
-let ticketPrice = +movieSelect.value
+// 获取节点
+const video = document.getElementById('video')
+const play = document.getElementById('play')
+const stop = document.getElementById('stop')
+const progress = document.getElementById('progress')
+const time = document.getElementById('time')
 
-// 读取历史记录
-if(localStorage.getItem('selectIndex')){
-	const storage = JSON.parse(localStorage.getItem('selectIndex'))
-	console.log(storage)
-	movieSelect.selectedIndex = storage.movieIndex
-	movieIndex = storage.movieIndex
-	ticketPrice = storage.ticketPrice
-	seats.forEach((seat,index) => {
-		if(storage.seatsIndex.indexOf(index) > -1)
-			seat.classList.add('selected')
-	})
-	updateSelected()
+function changeStatus(){
+	if(video.paused)
+		video.play()
+	else
+		video.pause()
 }
 
-// 监听点击座位
-container.onclick = (e) => {
-	const seat = e.target
-	// 判断是否是不可选
-	if(seat.classList.contains('seat') && !seat.classList.contains('occupied')){
-		// 切换selected属性，包含则删除，不包含则添加
-		seat.classList.toggle('selected')
-		// 更新座位数和票价
-		updateSelected()
-	}
+// 添加事件
+// 点击视频播放/暂停
+video.onclick = changeStatus
+// 视频暂停
+video.onpause = () => {
+	play.innerHTML = 
+		`
+			<i class="fa fa-play fa-2x"></i>
+		`
 }
-// 监听下拉框
-movieSelect.onchange = (e) => {
-	// 下拉框的index
-	movieIndex = e.target.selectedIndex
-	// 票价
-	ticketPrice = +e.target.value
-	seats.forEach(seat => {
-		seat.classList.remove('selected')
-	})
-	updateSelected()
+// 视频播放
+video.onplay = () => {
+	play.innerHTML =
+		`
+			<i class="fa fa-pause fa-2x"></i>
+		`
 }
 
-function updateSelected(){
-	const selectedSeats = document.querySelectorAll('.row .seat.selected')
-	
-	// 通过展开运算符将类数组转化成数组
-	const seatsIndex = [...selectedSeats].map(seat => {
-		return [...seats].indexOf(seat)
-	})
-	localStorage.setItem('selectIndex',JSON.stringify({
-		movieIndex,
-		ticketPrice,
-		seatsIndex,
-	}))
-	
-	
-	count.innerText = selectedSeats.length
-	total.innerText = selectedSeats.length * ticketPrice
+// 监听播放时间
+video.ontimeupdate = (e) => {
+	const currentTime = video.currentTime
+	progress.value = (currentTime/video.duration) * 100
+	let mins = Math.floor(currentTime / 60)
+	if(mins < 10)
+		mins = '0' + mins
+	let seconds = Math.floor(currentTime % 60)
+	if(seconds < 10)
+		seconds = '0' + seconds
+	time.innerText = `${mins}:${seconds}`
+}
+
+// 点击播放/暂停按键
+play.onclick = changeStatus
+//点击停止
+stop.onclick = () => {
+	video.pause()
+	video.currentTime = 0
+}
+// 拖动进度条
+progress.onchange = () => {
+	video.currentTime = +progress.value/100 * video.duration
 }

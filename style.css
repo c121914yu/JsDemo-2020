@@ -2,94 +2,66 @@
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
+	font-family: Arial, Helvetica, sans-serif;
 }
 body{
-	height: 100vh;
-	font-family: Arial, Helvetica, sans-serif;
-	background-color: #242333;
-	color: #FFFFFF;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	max-height: 100vh;
+	background-color: #666666;
 }
 
-.moviv-container{
-	margin: 20px 0;
+h1{
+	margin: 10px 0;
+	color: #FFFFFF;
 }
-.moviv-container select{
-	background-color: #FFFFFF;
-	border: 0;
-	border-radius: 5px;
-	font-size: 14px;
-	margin-left: 10px;
-	outline: none;
-	padding: 5px 15px;
-}
-.seat{
-	background-color: #444451;
-	height: 12px;
-	width: 15px;
-	margin: 3px;
+.screen{
+	cursor: pointer;
+	width: 60%;
+	background-color: #000000;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
 }
-.seat.selected{
-	background-color: #6feaf6;
-}
-.seat.occupied{
-	background-color: #FFFFFF;
-}
-.seat:nth-child(2){
-	margin-right: 18px;
-}
-.seat:nth-last-child(2){
-	margin-left: 18px;
-}
 
-.showCase{
-	background-color: rgba(0,0,0,0.1);
-	padding: 5px 10px;
-	border-radius: 5px;
-	color: #777777;
-	display: flex;
-	list-style: none;
-}
-.showCase li{
+.controls{
+	background-color: #333;
+	color: #FFFFFF;
+	width: 60%;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	padding: 10px;
+}
+.controls .btn{
 	margin: 0 10px;
-}
-.showCase li small{
-	margin: 5px;
-}
-
-.container{
-	perspective: 1000px;
-	margin-bottom: 30px;
-}
-.container .screen{
-	width: 100%;
-	height: 70px;
-	background-color: #FFFFFF;
-	margin: 15px 0;
-	transform: rotateX(-45deg);
-	box-shadow: 0 3px 10px rgba(255,255,255,0.7);
-}
-
-.row{
-	display: flex;
-	margin: 5px 0;
-}
-.row .seat:not(.occupied):hover{
+	border: 0;
+	background-color: transparent;
 	cursor: pointer;
-	transform: scale(1.2);
+}
+.controls .btn:focus{
+	outline: none;
+}
+.controls .btn .fa-play{
+	color: #28a745;
+}
+.controls .btn .fa-stop{
+	color: #dc3545;
+}
+.controls .btn .fa-pause{
+	color: #FFFFFF;
+}
+.controls .time{
+	margin-left: 5px;
 }
 
-.text{
-	margin: 5px 0;
-}
-.text span{
-	color: #6FEAF6;
+
+
+@media(max-width:800px) {
+	.screen,
+	.controls{
+		width: 90%;
+	}
 }

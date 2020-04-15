@@ -4,23 +4,75 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>数组方法</title>
+	<title>折叠侧边栏</title>
 	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<link href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.css" rel="stylesheet">
 </head>
 <body>
-	<h1>DOM数组方法</h1>
+	<nav>
+		<div class="logo">
+			<img src="logo.png" >
+		</div>
+		<h1>璡龙鱼池塘</h1>
+		<ul>
+			<li><a href="#">主页</a></li>
+			<li><a href="#">关于我们</a></li>
+			<li><a href="#">课程介绍</a></li>
+			<li><a href="#">联系我们</a></li>
+		</ul>
+	</nav>
+	
+	<header>
+		<button id="toggle" class="toggle">
+			<i class="fa fa-bars fa-2x"></i>
+		</button>
+		<h1>折叠侧边栏</h1>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta molestias.</p>
+		<button class="cta-btn" id="open">登录</button>
+	</header>
+	
 	<div class="container">
-		<aside>
-			<button id="add-user">添加账号</button>
-			<button id="double">资金翻倍</button>
-			<button id="show-millionaires">查询百万富翁</button>
-			<button id="sort">财富榜</button>
-			<button id="caculate-wealth">计算总金额</button>
-		</aside>
-		<main id="main">
-			<h2><strong>Person</strong>Wealth</h2>
-		</main>
+		<h2>为什么是璡龙鱼</h2>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae recusandae ducimus nemo saepe fugit placeat reprehenderit provident dicta voluptatum est.</p>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae recusandae ducimus nemo saepe fugit placeat reprehenderit provident dicta voluptatum est.</p>
+		<h2>一些废话</h2>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis tempora ipsa nam obcaecati dolore culpa beatae sint reprehenderit incidunt minus.</p>
 	</div>
+	
+	<!-- modal -->
+	<div class="modal-container" id="modal">
+		<div class="modal">
+			<button class="close-btn" id="close">
+				<i class="fa fa-times"></i>
+			</button>
+			<div class="modal-header">
+				<h3>登录</h3>
+			</div>
+			<div class="modal-content">
+				<p>登录了解更多</p>
+				<form class="modal-form">
+					<div>
+						<label for="name">姓名</label>
+						<input type="text" id="name" placeholder="请输入姓名" class="form-input">
+					</div>
+					<div>
+						<label for="email">邮箱</label>
+						<input type="text" id="email" placeholder="请输入邮箱" class="form-input">
+					</div>
+					<div>
+						<label for="password">密码</label>
+						<input type="password" id="password" placeholder="请输入密码" class="form-input">
+					</div>
+					<div>
+						<label for="password2">确认密码</label>
+						<input type="password" id="password2" placeholder="请确认密码" class="form-input">
+					</div>
+					<input type="submit" value="提交" class="submit-btn">
+				</form>
+			</div>
+		</div>
+	</div>
+	
 	<script src="index.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

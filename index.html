@@ -1,43 +1,58 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Form Validator</title>
-	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<title>猜字游戏</title>
+	<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<div class="container">
-	<form id="form" class="form">
-		<h2>注册</h2>
-		<div class="form-control">
-			<label for="username">用户名</label>
-			<input type="text" id="username" placeholder="请输入用户名">
-			<small>错误提示</small>
+	<h1>自挂东南枝</h1>
+	<p>找到隐藏的单词-输入字母</p>
+
+	<div class="game-container">
+		<svg height="250" width="200" class="figure-container">
+			<!-- 枝头 -->
+			<line x1="60" y1="20" x2="140" y2="20" />
+			<line x1="140" y1="20" x2="140" y2="50" />
+			<line x1="60" y1="20" x2="60" y2="230" />
+			<line x1="20" y1="230" x2="100" y2="230" />
+			<!-- 头部 -->
+			<circle cx="140" cy="70" r="20" class="figure" />
+			<!-- 躯干 -->
+			<line x1="140" y1="90" x2="140" y2="150" class="figure" />
+			<!-- 手臂 -->
+			<line x1="140" y1="120" x2="120" y2="100" class="figure" />
+			<line x1="140" y1="120" x2="160" y2="100" class="figure" />
+			<line x1="140" y1="150" x2="120" y2="180" class="figure" />
+			<line x1="140" y1="150" x2="160" y2="180" class="figure" />
+		</svg>
+
+		<!-- 错误提示 -->
+		<div class="error-container">
+			<div id="error-letters">
+			</div>
 		</div>
-		
-		<div class="form-control">
-			<label for="email">邮箱</label>
-			<input type="text" id="email" placeholder="请输入邮箱地址">
-			<small>错误提示</small>
+
+		<!-- 输入内容 -->
+		<div id="word" class="word"></div>
+	</div>
+
+	<!-- 弹出框 -->
+	<div class="popup-contaniner" id="popup-contaniner">
+		<div class="popup">
+			<h2 id="final-message">恭喜你输入正确</h2>
+			<button id="play-btn">再玩一次</button>
 		</div>
-		
-		<div class="form-control">
-			<label for="password">密码</label>
-			<input type="password" id="password" placeholder="请输入密码">
-			<small>错误提示</small>
-		</div>
-		
-		<div class="form-control">
-			<label for="password2">确认密码</label>
-			<input type="password" id="password2" placeholder="请再次输入密码">
-			<small>错误提示</small>
-		</div>
-		
-		<button type="submit">提交</button>
-	</form>
-</div>
+	</div>
+
+	<!-- 通知框 -->
+	<div class="note-container" id="note-container">
+		<p>此字母已输入过，请重新输入</p>
+	</div>
+	<script src="index.js"></script>
 </body>
-<script src="index.js" type="text/javascript" charset="utf-8"></script>
+
 </html>

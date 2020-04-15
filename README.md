@@ -1,4 +1,4 @@
-# 20个原生JsDemo
+# 20 个原生 JsDemo
 
 1. 表单验证 - table
 2. 电影座位预定 - cinema_ticket
@@ -6,3 +6,4 @@
 4. 汇率转化 - rate_count
 5. 数组方法 - arr_way
 6. 折叠侧边栏 - slide_nav
+7. 猜单词游戏（svg 图使用） - svg

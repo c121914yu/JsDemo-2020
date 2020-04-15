@@ -5,3 +5,4 @@
 3. 自定义视频播放器 - video
 4. 汇率转化 - rate_count
 5. 数组方法 - arr_way
+6. 折叠侧边栏 - slide_nav

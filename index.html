@@ -1,43 +1,34 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Form Validator</title>
-	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<title>食谱搜索</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<link href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 </head>
+
 <body>
-<div class="container">
-	<form id="form" class="form">
-		<h2>注册</h2>
-		<div class="form-control">
-			<label for="username">用户名</label>
-			<input type="text" id="username" placeholder="请输入用户名">
-			<small>错误提示</small>
-		</div>
-		
-		<div class="form-control">
-			<label for="email">邮箱</label>
-			<input type="text" id="email" placeholder="请输入邮箱地址">
-			<small>错误提示</small>
-		</div>
-		
-		<div class="form-control">
-			<label for="password">密码</label>
-			<input type="password" id="password" placeholder="请输入密码">
-			<small>错误提示</small>
-		</div>
-		
-		<div class="form-control">
-			<label for="password2">确认密码</label>
-			<input type="password" id="password2" placeholder="请再次输入密码">
-			<small>错误提示</small>
-		</div>
-		
-		<button type="submit">提交</button>
-	</form>
-</div>
+	<div class="container">
+		<h1>食谱查询器</h1>
+
+		<form id="submit" class="flex">
+			<input type="text" id="search" placeholder="输入食物名称和关键字...">
+			<button class="search" type="submit">
+				<i class="fas fa-search"></i>
+			</button>
+			<button class="random-btn" id="random">
+				<i class="fas fa-random"></i>
+			</button>
+		</form>
+
+		<div id="result-heading"></div>
+		<div id="meals" class="meals"></div>
+		<div id="single-meal"></div>
+	</div>
 </body>
 <script src="index.js" type="text/javascript" charset="utf-8"></script>
+
 </html>

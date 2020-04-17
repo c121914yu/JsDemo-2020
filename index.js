@@ -1,73 +1,96 @@
-// 获取dom
-const form = document.getElementById('form')
-const username = document.getElementById('username')
-const email = document.getElementById('email')
-const password = document.getElementById('password')
-const password2 = document.getElementById('password2')
+// 获取节点
+const submit = document.getElementById("submit")
+const search = document.getElementById("search")
+const random = document.getElementById("random")
 
-const message = 
+const resultHeading = document.getElementById("result-heading")
+const meals = document.getElementById("meals")
+const singleMeal = document.getElementById("single-meal")
 
-// 时间监听
-form.addEventListener('submit',(e) => {
-	e.preventDefault()
-	checkSpace([
-		{input:username,message:'用户名不能为空'},
-		{input:email,message:'邮箱不能为空'},
-		{input:password,message:'请输入密码'},
-		{input:password2,message:'请再次输入密码'}
-	])
-	
-	checkEmail()
-	checkLength(username,3,15,'用户名')
-	checkLength(password,6,12,'密码')
-	checkEquality(password,password2,'两次密码不一致')
-})
+// 搜索
+submit.onsubmit = (e) => {
+  e.preventDefault()
+  meals.innerHTML = ""
+  singleMeal.innerHTML = ""
 
-function checkSpace(inputArr){
-	inputArr.forEach(item => {
-		const input = item.input
-		if(input.value === "")
-			showError(input,item.message)
-		else
-			showSuccess(input)
-	})
-}
-function checkEmail(){
-	if(email.value === '') return
-	const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
-	if(!reg.test(email.value))
-		showError(email,'邮箱格式错误')
-	else
-		showSuccess(email)
-}
-function checkLength(input,min,max,keyword){
-	const val = input.value
-	if(val === '') return
-	console.log(val.length > max)
-	if(val.length < min)
-		showError(input,`${keyword}长度不能小于${min}`)
-	else if(val.length > max)
-		showError(input,`${keyword}长度不能大于${max}`)
-}
-function checkEquality(input1,input2,message){
-	console.log()
-	if(input1.value === input2.value)
-		showSuccess(input2)
-	else
-		showError(input2,message)
+  // 获取输入内容
+  const content = search.value
+  if (content.trim()) {
+    //https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata
+    fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${content}`)
+      .then(res => res.json())
+      .then(data => {
+        // 设置result heading
+        resultHeading.innerHTML = `<h2>${content}查询结果为： </h2>`
+        if (!data.meals)
+          resultHeading.innerHTML = '<p>没有查询到相关实物，重新输入搜索</p>'
+        else {
+          meals.innerHTML = data.meals.map(meal => `
+            <div class="meal">
+              <img src='${meal.strMealThumb}' alt='${meal.strMeal}'>
+              <div class="meal-info" onclick="getMealInfo(${meal.idMeal})">
+                <h3>${meal.strMeal}</h3>
+              </div>
+            </div>
+          `).join("")
+        }
+        search.value = ""
+      })
+  } else
+    alert("输入内容为空")
 }
 
-
-function showError(input,message){
-	const formControl = input.parentElement
-	const small = formControl.querySelector('small')
-	small.innerText = message
-	formControl.classList.remove('success')
-	formControl.classList.add('error')
+// 随机获取
+random.onclick = (e) => {
+  e.preventDefault()
+  meals.innerHTML = ""
+  singleMeal.innerHTML = ""
+  fetch('https://www.themealdb.com/api/json/v1/1/random.php')
+    .then(res => res.json())
+    .then(data => {
+      addMealDom(data.meals[0])
+    })
 }
 
-function showSuccess(input){
-	const formControl = input.parentElement
-	formControl.classList.remove('error')
-	formControl.classList.add('success')
+function getMealInfo(id) {
+  // https://www.themealdb.com/api/json/v1/1/lookup.php?i=52772
+  fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
+    .then(res => res.json())
+    .then(data => {
+      addMealDom(data.meals[0])
+    })
+}
+
+function addMealDom(meal) {
+  console.log(meal)
+  const ingredients = []
+  for (let i = 1; i < 20; i++) {
+    if (meal[`strIngredient${i}`]) {
+      ingredients.push(
+        `${meal[`strIngredient${i}`]} - ${meal[`strMeasure${i}`]}`
+      )
+    } else
+      break
+  }
+
+  singleMeal.innerHTML =
+    `
+    <div class="single-meal">
+      <h1>${meal.strMeal}</h1>
+      <img src='${meal.strMealThumb}' alt='${meal.strMeal}'></img>
+      <div class="single-meal-info">
+        ${meal.strCategory ? `<p>${meal.strCategory}</p>` : ''}
+        ${meal.strArea ? `<p>${meal.strArea}</p>` : ''}
+      </div>
+      <div class="main">
+        <p>${meal.strInstructions}</p>
+        <h2>Ingredients</h2>
+        <ul>
+          ${ingredients.map(item => `
+            <li>${item}</li>
+          `).join("")}
+        </ul>
+      </div>
+    </div>
+  `
 }

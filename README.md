@@ -1,12 +1,6 @@
-# From表单验证
+# 食谱搜索
 
-```css
-/* 隐藏与显示 */
-visibility: hidden;
-visibility: visible;
-```
-
-```js
-// 邮箱验证正则表达式
-const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
-```
+1. fetch 使用
+2. 巩固 css
+3. themealdb API 使用
+4. 模板字符串

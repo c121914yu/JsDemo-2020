@@ -8,3 +8,4 @@
 6. 折叠侧边栏 - slide_nav
 7. 猜单词游戏（svg 图使用） - svg
 8. 遗传算法求极大值 - GA
+9. 食谱搜索 - food_search

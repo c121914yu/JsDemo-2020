@@ -1,105 +1,162 @@
-// dom获取
-const wordEl = document.getElementById("word")
-const errLetter = document.getElementById("error-letters")
-const noteContainer = document.getElementById("note-container")
-const popup = document.getElementById("popup-contaniner")
-const finalMessage = document.getElementById("final-message")
-const playAgain = document.getElementById("play-btn")
+// x,y取值范围
+var rangeX, rangeY
 
-const partArr = document.querySelectorAll(".figure")
+// 样本长度
+var coordinatesLength
 
-const words = [
-	"application", "programming", "intertface", "wonder"
-]
-var selectedWord = words[Math.floor(Math.random() * words.length)]
+// 进化次数(迭代次数)
+var evolveTimes
+// 复制的比例
+var copyRatio
 
-var correctLetters = []
-var wrongLetters = []
+/* 
+	样本数组
+	格式：
+	[
+		[x,y,val]
+	]
+*/
+var coordArr
 
-// 显示单词函数
-function displayWord() {
-	wordEl.innerHTML =
-		`
-		${selectedWord.split("").map(letter => 
-			`
-				<span class="letter">
-					${correctLetters.includes(letter) ? letter : ""}
-				</span>
-			`
-		).join("")}
-	`
-	const innerWord = wordEl.innerText.replace(/\n/g, "")
+// 交叉的个数
+var crossNum
+// 变异数
+var variationNum
 
-	if (innerWord === selectedWord) {
-		finalMessage.innerText = "恭喜你输入正确"
-		popup.style.display = "flex"
+// 自然概率 : 下标对应坐标数组下标，值代表概率
+var selectionProbability
+// 绘图data
+var data
+
+function calculate() {
+	// 获取输入
+	initData()
+	coordArr = getRandomArray(coordinatesLength, rangeX, rangeY)
+	for (let i = 1; i <= evolveTimes; i++) {
+		// 计算适应度
+		calAdaptability()
+		// 复制
+		const copyArr = copy()
+		// 交叉
+		let newCoord = cross()
+		// 变异
+		newCoord = mutation(newCoord)
+		// 组合成新数组
+		coordArr = newCoord.concat(copyArr)
+		coordArr.forEach(item => {
+			item = getval(item)
+		})
+		data = data.concat(calData(i))
+	}
+	result()
+}
+// calculate()
+
+// 计算适应度及选择概率
+function calAdaptability() {
+	selectionProbability = []
+	const sum = calSum()
+	for (let i = 0; i < coordinatesLength; i++)
+		selectionProbability.push(coordArr[i][2] / sum)
+}
+
+/*
+	寻找最大的n个保留
+*/
+function copy() {
+	let arr = [...coordArr]
+	arr = sortArr(arr)
+	arr = arr.slice(0, copyRatio * coordinatesLength)
+	return arr
+}
+
+/* 
+	交叉
+	生成{crossNum}条染色体
+*/
+function cross() {
+	let newCoord = []
+	for (let i = 0; i < crossNum; i++) {
+		let father = [...coordArr[RWS()]]
+		let mather = [...coordArr[RWS()]]
+		// 进行交叉
+		let results = [
+			[father[0],father[1]],
+			[father[0],mather[1]],
+			[mather[0],father[1]],
+			[mather[0],mather[1]]
+		]
+		let index = intRandom(0, 3)
+		newCoord.push(results[index])
+	}
+	return newCoord
+}
+
+// 轮盘赌算法
+function RWS() {
+	let sum = 0
+	let rand = Math.random()
+	for (let i = 0; i < coordinatesLength; i++) {
+		sum += selectionProbability[i]
+		if (sum > rand)
+			return i
 	}
 }
-displayWord()
 
-// 显示提示框函数
-function showNote() {
-	noteContainer.classList.add("show")
-	setTimeout(() => {
-		noteContainer.classList.remove("show")
-	}, 2000);
+// 变异
+function mutation(coord) {
+	// 在交叉的个体中随机选中一个
+	let coordIndex = intRandom(0, crossNum - 1)
+	// 随机获取x/y
+	let vector = intRandom(0, 1)
+	// 随机获取坐标值
+	let val = vector === 0 ? random(rangeX) : random(rangeY)
+	coord[coordIndex][vector] = val
+	return coord
 }
 
-// 更新错误内容
-function updateWrongLettersEl() {
-	errLetter.innerHTML =
-		`
-		<p>错误：</p>
-		<span>${wrongLetters.join(',')}</span>
-	`
-
-	// 火柴人
-	partArr.forEach((item, index) => {
-		const errTimes = wrongLetters.length
-		if (index < errTimes)
-			item.style.display = "block"
-	})
-
-	// 判断次数用尽
-	if (wrongLetters.length === partArr.length) {
-		finalMessage.innerText = "输入错误次数过多！游戏结束。"
-		popup.style.display = "flex"
+function result() {
+	// 绘图
+	let chart = echarts.init(document.getElementById('canvas'))
+	let option = {
+		title: {
+			text: "-(y+47)sin(✔|y+x/2+47|) - xsin(✔|x-y-47)| 极大值",
+			left: "center"
+		},
+		// tooltip: {
+		// 	trigger: "axis",
+		// },
+		xAxis: {
+			type: 'value',
+			scale: true,
+			name: '迭代次数'
+		},
+		yAxis: {
+			type: 'value',
+			scale: true,
+			name: '函数取值'
+		},
+		series: [{
+			name: '遗传算法',
+			type: 'scatter',
+			large: true,
+			symbol: "circle",
+			symbolSize: 2,
+			data: data
+		}]
 	}
-}
+	chart.setOption(option)
 
-// 再玩一次
-playAgain.onclick = () => {
-	correctLetters = []
-	wrongLetters = []
-	selectedWord = words[Math.floor(Math.random() * words.length)]
-	errLetter.innerHTML = ""
-	partArr.forEach(item => {
-		item.style.display = "none"
-	})
-	popup.style.display = "none"
-	displayWord()
-}
-
-// 监听键盘输入
-window.onkeydown = (e) => {
-	console.log(e.key)
-	if (e.keyCode >= 65 && e.keyCode <= 90) {
-		const letter = e.key
-		// 输入正确且不存在已经输入的字母中
-		if (selectedWord.includes(letter)) {
-			if (!correctLetters.includes(letter)) {
-				correctLetters.push(letter)
-				displayWord()
-			} else {
-				showNote()
-			}
-		} else {
-			if (!wrongLetters.includes(letter)) {
-				wrongLetters.push(letter)
-				updateWrongLettersEl()
-			} else {
-				showNote()
-			}
-		}
-	}
+	// 计算dom文本
+	let time = new Date() - beginTime
+	const maxVector = sortArr(coordArr)[0]
+	maxVector[0] = maxVector[0].toFixed(0)
+	maxVector[1] = maxVector[1].toFixed(0)
+	maxVector[2] = maxVector[2].toFixed(0)
+	// 转化s
+	time /= 1000
+	document.querySelector(".time").innerText = `${time}s`
+	document.querySelector(".max").innerText = `(${maxVector[0]},${maxVector[1]},${maxVector[2]})`
+	document.querySelector(".mask").style.display = "none"
+	playing = false
 }

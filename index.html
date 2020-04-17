@@ -1,58 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>猜字游戏</title>
-	<link rel="stylesheet" href="style.css">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>遗传算法</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 
 <body>
-	<h1>自挂东南枝</h1>
-	<p>找到隐藏的单词-输入字母</p>
-
-	<div class="game-container">
-		<svg height="250" width="200" class="figure-container">
-			<!-- 枝头 -->
-			<line x1="60" y1="20" x2="140" y2="20" />
-			<line x1="140" y1="20" x2="140" y2="50" />
-			<line x1="60" y1="20" x2="60" y2="230" />
-			<line x1="20" y1="230" x2="100" y2="230" />
-			<!-- 头部 -->
-			<circle cx="140" cy="70" r="20" class="figure" />
-			<!-- 躯干 -->
-			<line x1="140" y1="90" x2="140" y2="150" class="figure" />
-			<!-- 手臂 -->
-			<line x1="140" y1="120" x2="120" y2="100" class="figure" />
-			<line x1="140" y1="120" x2="160" y2="100" class="figure" />
-			<line x1="140" y1="150" x2="120" y2="180" class="figure" />
-			<line x1="140" y1="150" x2="160" y2="180" class="figure" />
-		</svg>
-
-		<!-- 错误提示 -->
-		<div class="error-container">
-			<div id="error-letters">
-			</div>
+	<div class="mask"></div>
+	<div class="menu">
+		<div class="item range">
+			<span>X取值:&ensp;</span>
+			<input type="text" id="startX" placeholder="x最小值" value="-1000">
+			<span>&ensp;-&ensp;</span>
+			<input type="text" id="endX" placeholder="x最大值" value="1000">
 		</div>
 
-		<!-- 输入内容 -->
-		<div id="word" class="word"></div>
-	</div>
-
-	<!-- 弹出框 -->
-	<div class="popup-contaniner" id="popup-contaniner">
-		<div class="popup">
-			<h2 id="final-message">恭喜你输入正确</h2>
-			<button id="play-btn">再玩一次</button>
+		<div class="item range">
+			<span>Y取值:&ensp;</span>
+			<input type="text" id="startY" placeholder="y最小值" value="-1000">
+			<span>&ensp;-&ensp;</span>
+			<input type="text" id="endY" placeholder="y最大值" value="1000">
 		</div>
+
+		<div class="item">
+			<span>样本长度:&ensp;</span>
+			<input type="text" id="arrLen" placeholder="样本长度" value="1000">
+		</div>
+
+		<div class="item">
+			<span>进化次数:&ensp;</span>
+			<input type="text" id="evolveTimes" placeholder="进化次数" value="300">
+		</div>
+
+		<div class="item">
+			<span>复制比例:&ensp;</span>
+			<input type="text" id="copyRatio" placeholder="复制比例" value="0.1">
+		</div>
+		<div class="item">
+			计算时间: <span class="time"></span>
+		</div>
+		<div class="item">
+			最大值：<span class="max"></span>
+		</div>
+		<button id="begin">计算</button>
 	</div>
 
-	<!-- 通知框 -->
-	<div class="note-container" id="note-container">
-		<p>此字母已输入过，请重新输入</p>
-	</div>
-	<script src="index.js"></script>
+	<div class="canvas" id="canvas"></div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/3.8.5/echarts-en.min.js"></script>
+<script src="common.js" type="text/javascript" charset="utf-8"></script>
+<script src="index.js" type="text/javascript" charset="utf-8"></script>
 
 </html>

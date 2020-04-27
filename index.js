@@ -1,73 +1,62 @@
-// 获取dom
-const form = document.getElementById('form')
-const username = document.getElementById('username')
-const email = document.getElementById('email')
-const password = document.getElementById('password')
-const password2 = document.getElementById('password2')
+const postContainer = document.getElementById("posts-container")
+const loading = document.querySelector(".loader")
+const filter = document.getElementById("filter")
 
-const message = 
+const url = "http://jsonplaceholder.typicode.com/posts"
 
-// 时间监听
-form.addEventListener('submit',(e) => {
-	e.preventDefault()
-	checkSpace([
-		{input:username,message:'用户名不能为空'},
-		{input:email,message:'邮箱不能为空'},
-		{input:password,message:'请输入密码'},
-		{input:password2,message:'请再次输入密码'}
-	])
-	
-	checkEmail()
-	checkLength(username,3,15,'用户名')
-	checkLength(password,6,12,'密码')
-	checkEquality(password,password2,'两次密码不一致')
-})
+let limit = 5 //每次请求5条
+let page = 1 //第n页
+var scrolled = true
 
-function checkSpace(inputArr){
-	inputArr.forEach(item => {
-		const input = item.input
-		if(input.value === "")
-			showError(input,item.message)
-		else
-			showSuccess(input)
+async function getPosts(){
+	const res = await fetch(`${url}?_limit=${limit}&_page=${page}`)
+	const data = await res.json()
+	return data
+}
+
+async function showPosts(){
+	scrolled = false
+	loading.classList.add('show')
+	const posts = await getPosts()
+	posts.forEach(post => {
+		const postEl = document.createElement("div")
+		postEl.classList.add("post")
+		postEl.innerHTML = 
+		`
+			<div class="number">${post.id}</div>
+			<div class="post-info">
+				<h2 class="post-title">${post.title}</h2>
+				<p class="post-body">${post.body}</p>
+			</div>
+		`
+		postContainer.appendChild(postEl)
 	})
-}
-function checkEmail(){
-	if(email.value === '') return
-	const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
-	if(!reg.test(email.value))
-		showError(email,'邮箱格式错误')
-	else
-		showSuccess(email)
-}
-function checkLength(input,min,max,keyword){
-	const val = input.value
-	if(val === '') return
-	console.log(val.length > max)
-	if(val.length < min)
-		showError(input,`${keyword}长度不能小于${min}`)
-	else if(val.length > max)
-		showError(input,`${keyword}长度不能大于${max}`)
-}
-function checkEquality(input1,input2,message){
-	console.log()
-	if(input1.value === input2.value)
-		showSuccess(input2)
-	else
-		showError(input2,message)
+	loading.classList.remove('show')
+	scrolled = true
 }
 
+showPosts()
 
-function showError(input,message){
-	const formControl = input.parentElement
-	const small = formControl.querySelector('small')
-	small.innerText = message
-	formControl.classList.remove('success')
-	formControl.classList.add('error')
+window.onscroll = () => {
+	if(!scrolled) return
+	const {scrollTop,scrollHeight,clientHeight} = document.documentElement
+	if(scrollTop + clientHeight >= scrollHeight-5){
+		page++
+		showPosts()
+	}
 }
 
-function showSuccess(input){
-	const formControl = input.parentElement
-	formControl.classList.remove('error')
-	formControl.classList.add('success')
+// 监听输入
+filter.oninput = (e) => {
+	// 全部转大写，且忽略空格
+	const val = e.target.value.toUpperCase().replace(/\s/g,"")
+	const posts = postContainer.querySelectorAll(".post")
+	posts.forEach(post => {
+		const title = post.querySelector(".post-title").innerText.toUpperCase().replace(/\s/g,"")
+		const body = post.querySelector(".post-body").innerText.toUpperCase().replace(/\s/g,"")
+		if(title.indexOf(val) > -1 || body.indexOf(val) > -1)
+			post.style.display = "block"
+		else
+			post.style.display = "none"
+	})
 }

@@ -1,12 +1,16 @@
-# From表单验证
-
-```css
-/* 隐藏与显示 */
-visibility: hidden;
-visibility: visible;
-```
+# 记账本
 
 ```js
-// 邮箱验证正则表达式
-const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
+// 创建一个标签的方法
+const html = 
+`
+	<li class="${className}">
+		${transaction.name}
+		<span>${sign}${Math.abs(transaction.amount)}</span>
+		<button class="delete-btn" onclick="deleteRecord(${transaction.id})">×</button>
+	</li>
+`
+let dom = document.createElement("div")
+dom.innerHTML = html
+dom = dom.children[0]
 ```

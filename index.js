@@ -1,73 +1,81 @@
-// 获取dom
-const form = document.getElementById('form')
-const username = document.getElementById('username')
-const email = document.getElementById('email')
-const password = document.getElementById('password')
-const password2 = document.getElementById('password2')
+// 获取节点
+const balance = document.getElementById("balance")
+const money_plus = document.getElementById("money-plus")
+const money_minus= document.getElementById("money-minus")
+const list = document.getElementById("list")
+const form = document.getElementById("form")
+const name = document.getElementById("name")
+const amount = document.getElementById("amount")
 
-const message = 
+var records = []
+var money = {}
 
-// 时间监听
-form.addEventListener('submit',(e) => {
-	e.preventDefault()
-	checkSpace([
-		{input:username,message:'用户名不能为空'},
-		{input:email,message:'邮箱不能为空'},
-		{input:password,message:'请输入密码'},
-		{input:password2,message:'请再次输入密码'}
-	])
+function addTransactionDom(transaction){
+	const sign = transaction.amount < 0 ? "-" : "+"
+	const className = transaction.amount < 0 ? "minus" : "plus"
+	// 创建标签
+	const html = 
+	`
+		<li class="${className}">
+			${transaction.name}
+			<span>${sign}${Math.abs(transaction.amount)}</span>
+			<button class="delete-btn" onclick="deleteRecord(${transaction.id})">×</button>
+		</li>
+	`
+	let dom = document.createElement("div")
+	dom.innerHTML = html
+	dom = dom.children[0]
 	
-	checkEmail()
-	checkLength(username,3,15,'用户名')
-	checkLength(password,6,12,'密码')
-	checkEquality(password,password2,'两次密码不一致')
-})
+	list.appendChild(dom)
+	updateMoney(transaction)
+}
 
-function checkSpace(inputArr){
-	inputArr.forEach(item => {
-		const input = item.input
-		if(input.value === "")
-			showError(input,item.message)
-		else
-			showSuccess(input)
+// 更新余额/收入/支出
+function updateMoney(transaction){
+	money.balance += transaction.amount
+	transaction.amount < 0 ? money.minus+=transaction.amount : money.plus+=transaction.amount
+
+	// 更新dom
+	balance.innerText = `$${money.balance.toFixed(2)}`
+	money_plus.innerText = `+$${Math.abs(money.plus).toFixed(2)}`
+	money_minus.innerText = `-$${Math.abs(money.minus).toFixed(2)}`
+}
+
+// 删除
+function deleteRecord(id){
+	records.find((item,index) => {
+		if(item.id === id){
+			records.splice(index,1)
+			localStorage.setItem("records",JSON.stringify(records))
+			init()
+			return true
+		}
 	})
 }
-function checkEmail(){
-	if(email.value === '') return
-	const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
-	if(!reg.test(email.value))
-		showError(email,'邮箱格式错误')
-	else
-		showSuccess(email)
-}
-function checkLength(input,min,max,keyword){
-	const val = input.value
-	if(val === '') return
-	console.log(val.length > max)
-	if(val.length < min)
-		showError(input,`${keyword}长度不能小于${min}`)
-	else if(val.length > max)
-		showError(input,`${keyword}长度不能大于${max}`)
-}
-function checkEquality(input1,input2,message){
-	console.log()
-	if(input1.value === input2.value)
-		showSuccess(input2)
-	else
-		showError(input2,message)
+
+form.onsubmit = (e) => {
+	e.preventDefault()
+	const transaction = {id: +(new Date()),name: name.value,amount: Number(amount.value)}
+	records.push(transaction)
+	addTransactionDom(transaction)
+	name.value = ""
+	amount.value = ""
+	
+	localStorage.setItem("records",JSON.stringify(records))
 }
 
-
-function showError(input,message){
-	const formControl = input.parentElement
-	const small = formControl.querySelector('small')
-	small.innerText = message
-	formControl.classList.remove('success')
-	formControl.classList.add('error')
+// 初始化
+function init(){
+	if(localStorage.getItem("records"))
+		records = JSON.parse(localStorage.getItem("records"))
+	money = {
+		plus: 0,
+		minus: 0,
+		balance: 0,
+	}
+	list.innerHTML = ""
+	records.forEach(item => {
+		addTransactionDom(item)
+	})
 }
-
-function showSuccess(input){
-	const formControl = input.parentElement
-	formControl.classList.remove('error')
-	formControl.classList.add('success')
-}
+init()

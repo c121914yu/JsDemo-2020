@@ -4,25 +4,40 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>无限滚动懒加载</title>
+	<title>Form Validator</title>
 	<link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
-	<h1>我的博客</h1>
-	
-	<div class="filter-container">
-		<input type="text" id="filter" class="filter" placeholder="查询帖子...">
-	</div>
-	
-	<div id="posts-container"></div>
-	
-	<!-- 加载动画 -->
-	<div class="loader">
-		<div class="circle"></div>
-		<div class="circle"></div>
-		<div class="circle"></div>
-	</div>
-	
-	<script src="index.js" type="text/javascript"></script>
+<div class="container">
+	<form id="form" class="form">
+		<h2>注册</h2>
+		<div class="form-control">
+			<label for="username">用户名</label>
+			<input type="text" id="username" placeholder="请输入用户名">
+			<small>错误提示</small>
+		</div>
+		
+		<div class="form-control">
+			<label for="email">邮箱</label>
+			<input type="text" id="email" placeholder="请输入邮箱地址">
+			<small>错误提示</small>
+		</div>
+		
+		<div class="form-control">
+			<label for="password">密码</label>
+			<input type="password" id="password" placeholder="请输入密码">
+			<small>错误提示</small>
+		</div>
+		
+		<div class="form-control">
+			<label for="password2">确认密码</label>
+			<input type="password" id="password2" placeholder="请再次输入密码">
+			<small>错误提示</small>
+		</div>
+		
+		<button type="submit">提交</button>
+	</form>
+</div>
 </body>
+<script src="index.js" type="text/javascript" charset="utf-8"></script>
 </html>

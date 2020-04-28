@@ -4,48 +4,46 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>记账本</title>
+	<title>打字游戏</title>
 	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.13.0/css/all.css" rel="stylesheet">
 </head>
 <body>
-	<h2>记账本</h2>
+	<button 
+		id="setting-btn" 
+		class="setting-btn active"
+	>
+		<i class="fas fa-cog"></i>
+	</button>
 	
-	<div class="container">
-		<h4>你的余额</h4>
-		<h1 id="balance">$0.00</h1>
-	
-		<div class="inc-exp-container">
+	<div id="setting" class="setting show">
+		<div id="setting-form">
 			<div>
-				<h4>收入</h4>
-				<p id="money-plus" class="money plus">+$0.00</p>
-			</div>
-			<div>
-				<h4>支出</h4>
-				<p id="money-minus" class="money minus">-$0.00</p>
+				<label for="difficulty">游戏难度</label>
+					<select id="difficulty">
+						<option value="easy">简单</option>
+						<option value="medium">中等</option>
+						<option value="hard">困难</option>
+					</select>
 			</div>
 		</div>
-		
-		<h3>添加新交易</h3>
-		<form id="form">
-			<div class="form-control">
-				<label for="name">交易名称</label>
-				<input type="text" id="name" placeholder="输入名称..." required autocomplete="off">
-			</div>
-			<div class="form-control">
-				<label for="amount">
-					交易金额<br/>
-					&emsp;(负号表示支出,留空或正号表示收入)
-				</label>
-				
-				<input type="number" id="amount" placeholder="输入金额..." required autocomplete="off">
-			</div>
-			<button class="btn" type="submit">添加新交易</button>
-		</form>
-		
-		<h3>历史记录</h3>
-		<ul id="list" class="list">
-		</ul>
 	</div>
-	<script src="index.js" type="text/javascript" charset="utf-8"></script>
+	
+	<div class="container">
+		<h2>打字游戏</h2>
+		<small>本局单词为：</small>
+		
+		<h1 id="word"></h1>
+		<input type="text" id="input" autocomplete="off" placeholder="输入字母...">
+		<p class="time-container">剩余时间: <span id="time">10 s</span></p>
+		<p class="score-container">游戏得分: <span id="score">0</span></p>
+		
+		<div id="end-game-container" class="end-game-container">
+			<h1>打字游戏</h1>
+			<p>成功输入一个单词后时间会递增<br/><br/>简单: +6s 中等: +4s 困难: +2s</p>
+			<button onclick="init()">开始游戏</button>
+		</div>
+	</div>
 </body>
+<script src="index.js" type="text/javascript" charset="utf-8"></script>
 </html>

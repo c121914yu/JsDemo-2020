@@ -11,3 +11,5 @@
 9. 食谱搜索 - food_search  
 10. 记账本 - origin money_record  
 11. 滚动懒加载 - origin scroll_load
+12. 打字游戏 - play_word_game
+13. 文字转语言 - speed_api

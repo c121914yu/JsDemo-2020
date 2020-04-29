@@ -1,136 +1,115 @@
-// dom
-const main = document.querySelector("main")
-const voicesSelect = document.getElementById("voices")
-const textarea = document.getElementById("text")
-const readBtn = document.getElementById("read")
-const toggleBtn = document.getElementById("toggle")
-const closeBtn = document.getElementById("close")
+// 获取dom
+const remenberBtn = document.querySelector(".remenber-btn")
+const container = document.querySelector(".container")
+
+var words
+var wordIndex = 0
 
 var synth = window.speechSynthesis
+var voices
 
-// 创建data数据
-const data = [
-  {
-    image: "./img/spring01.jpg",
-    text: "春暖花开"
-  },
-  {
-    image: "./img/summer01.jpg",
-    text: "夏阳酷暑"
-  },
-  {
-    image: "./img/autumn01.jpg",
-    text: "雁过留声"
-  },
-  {
-    image: "./img/winter01.jpg",
-    text: "白雪皑皑"
-  },
-  {
-    image: "./img/spring02.jpg",
-    text: "草长莺飞"
-  },
-  {
-    image: "./img/summer02.jpg",
-    text: "骄阳似火"
-  },
-  {
-    image: "./img/autumn02.jpg",
-    text: "一叶知秋 "
-  },
-  {
-    image: "./img/winter02.jpg",
-    text: "瑞雪纷飞"
-  },
-  {
-    image: "./img/spring03.jpg",
-    text: "鸟语花香"
-  },
-  {
-    image: "./img/summer03.jpg",
-    text: "艳阳高照"
-  },
-  {
-    image: "./img/autumn03.jpg",
-    text: "秋风瑟瑟"
-  },
-  {
-    image: "./img/winter03.jpg",
-    text: "雪中送炭"
-  }
-]
-
-data.forEach(createBox)
-function createBox(item){
-	const box = document.createElement("div")
-	const {image,text} = item //相当于image = item.image
-	box.classList.add("box")
-	box.innerHTML = 
-	`
-		<image src="${image}" alt="${text}" />
-		<p class="info">${text}</p>
-	`
-	main.appendChild(box)
-	
-	box.onclick = () => {
-		speedText(text,box)
-	}
-}
-
-// 获取voices
-var voices = []
+// 初始化speedAPi
 function getVoices(){
 	voices = synth.getVoices()
-	voices.forEach(voice => {
-		const option = document.createElement("option")
-		option.value = voice.lang
-		option.innerText = `${voice.name} ${voice.lang}`
-		voicesSelect.appendChild(option)
-	})
+	if(voices.length > 0)
+		getWords()
 }
 getVoices()
 if(synth.onvoiceschanged !== undefined)
   synth.onvoiceschanged = getVoices
 
-// 打开文字框
-toggleBtn.onclick = () => {
-	document.getElementById("text-box").classList.toggle("show")
-}
-
-// 关闭按键
-closeBtn.onclick = () => {
-	document.getElementById("text-box").classList.remove("show")
-}
-
-// readBtn
-readBtn.onclick = () => {
-	if(synth.speaking) return
-	const text = textarea.value
-	if(text != "")
-		speedText(text,readBtn)
-}
-
-// 播放语言
-function speedText(text,dom){
-	let speakText = new SpeechSynthesisUtterance(text)
-	// 选择语言
-	voices.find(voice => {
-		if(voice.lang === voicesSelect.value){
-			speakText.voice = voice
-			return true
-		}
+// 获取英文单词
+function getWords(){
+	let temp = localStorage.getItem("words")
+	if(temp){
+		randomWords(JSON.parse(temp))
+		updateContainer()
+	}
+	else
+	fetch("./word.json")
+	.then(res => res.json())
+	.then(data => {
+		randomWords(data)
+		localStort()
+		updateContainer()
 	})
-	// 设置声音大小
+	
+	function randomWords(val){
+		words = val
+		words.sort(() => {
+			return Math.random() - Math.random()
+		})
+	}
+}
+
+// 本地存储
+function localStort(){
+	localStorage.setItem("words",JSON.stringify(words))
+}
+
+// 更新container
+function updateContainer(){
+	const word = words[wordIndex]
+	container.innerHTML = 
+	`
+		<h2>${word.word}</h2>
+		<p>
+			${word.voice}
+			<i class="fa fa-volume-down" onclick="speakWord('${word.word}')"></i>
+		</p>
+		<h3 class="open-translate" onclick="showTranslate()">点击查看中文</h3>
+		<h3 class="translate">${word.translate}</h3>
+	`
+	
+	signWord()
+	speakWord(word.word)
+}
+
+// 生/熟词切换
+function signWord(){
+	if(words[wordIndex].remenber){
+		remenberBtn.innerText = "熟词"
+		remenberBtn.classList.add("remenber")
+	}
+	else{
+		remenberBtn.innerText = "生词"
+		remenberBtn.classList.remove("remenber")
+	}
+}
+// 查看中文
+function showTranslate(){
+	document.querySelector(".open-translate").classList.add("show")
+	document.querySelector(".translate").classList.add("show")
+}
+
+// 切换单词
+function changeWord(index){
+	wordIndex += index
+	if(wordIndex < 0)
+		wordIndex = words.length-1
+	else if(wordIndex === words.length)
+		wordIndex = 0
+	// 清空正在播放的单词
+	synth.cancel()
+	updateContainer()
+}
+
+// 播放单词
+function speakWord(word){
+	let speakText = new SpeechSynthesisUtterance(word)
+	speakText.voice = voices[1]
 	speakText.volume = 1
-	speakText.onstart = () => {
-		dom.classList.add("active")
-	}
-	speakText.onend = () => {
-		dom.classList.remove("active")
-	}
-	speakText.error = (err) => {
+	speakText.rate = 0.8
+	
+	speakText.onerror = (err) => {
 		console.log(err)
 	}
-	
 	synth.speak(speakText)
+}
+
+// 记住了
+remenberBtn.onclick = () => {
+	words[wordIndex].remenber = !words[wordIndex].remenber
+	localStort()
+	signWord()
 }

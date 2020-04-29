@@ -95,6 +95,7 @@ h1{
 
 
 .voices{
+	display: none;
 	margin-top: 20px;
 }
 .voices select{

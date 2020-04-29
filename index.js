@@ -18,6 +18,7 @@ function getVoices(){
 	voices = synth.getVoices()
 	console.log(voices)
 	if(voices.length > 0){
+		document.querySelector(".voices").style.display = "block"
 		voices.forEach(voice => {
 			const option = document.createElement("option")
 			option.classList.add("voice")
@@ -27,9 +28,8 @@ function getVoices(){
 				option.selected = "option"
 			voicesSelect.appendChild(option)
 		})
-		
-		getWords()
 	}
+	getWords()
 }
 getVoices()
 if(synth.onvoiceschanged !== undefined)

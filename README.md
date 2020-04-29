@@ -1,15 +1,31 @@
-# 20 个原生 JsDemo
+# 文字转语言API
 
-1. 表单验证 - table  
-2. 电影座位预定 - cinema_ticket  
-3. 自定义视频播放器 - video  
-4. 汇率转化 - rate_count  
-5. 数组方法 - arr_way  
-6. 折叠侧边栏 - slide_nav  
-7. 猜单词游戏（svg 图使用） - svg  
-8. 遗传算法求极大值 - GA  
-9. 食谱搜索 - food_search  
-10. 记账本 - origin money_record  
-11. 滚动懒加载 - origin scroll_load
-12. 打字游戏 - play_word_game
-13. 文字转语言 - speed_api
+```js
+speechSynthesis //目前浏览器兼容性还不是很好
+
+//实例化
+var synth = window.speechSynthesis
+  .getVoices() //获取支持的语言列表（谷歌的语言用不了）
+  .onvoiceschanged //解决异步问题
+  .speaking //正在说话
+  .cancel() //清除说话列表
+  .pause() //暂停说话
+  .resume() //恢复暂停
+  .speak(speakText) //发音
+  .onerror //错误
+  .onend //说话结束
+
+//获得说话文本
+const speakText = new SpeechSynthesisUtterance(textInput.value)
+  .voice = voice  //选择语言
+  .rate = number //音速
+  .pitch = number//音调
+  .volume = number//声音大小
+  .onstart = function // 语言开始
+  .onend = function //结束
+  .error = function //错误
+  .onpause = function //暂停
+  .onresume = function //恢复暂停
+  .onboundary //说到单词或句子边界
+  .onmark //到标记处
+```

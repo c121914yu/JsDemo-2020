@@ -1,19 +1,35 @@
+/* 滚动条样式 */
+::-webkit-scrollbar{
+	width:10px;
+	height: 7px;
+}
+::-webkit-scrollbar-track{
+	background: rgb(239, 239, 239);
+	border-radius:2px;
+}
+::-webkit-scrollbar-thumb{
+	background-color: #bfbfbf;
+	border-radius:10px;
+}
+::-webkit-scrollbar-thumb:hover{
+ background-color: var(--green1);
+}
 *{
 	box-sizing: border-box;
 }
 body{
+	margin: 0;
 	min-height: 100vh;
-	width: 100%;
+	width: 100vw;
 	font-size: 16px;
 	font-family: Arial, Helvetica, sans-serif;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
-	overflow: hidden;
 	letter-spacing: 0.5px;
 }
 h1{
+    margin-top: 50px;
 	letter-spacing: 1px;
 }
 
@@ -75,4 +91,46 @@ h1{
 }
 .card .btns button.remenber-btn.remenber{
 	background-color: #5ad8a6;
+}
+
+
+.voices{
+	margin-top: 20px;
+}
+.voices select{
+	padding: 5px;
+	border-radius: 5px;
+	outline: none;
+}
+
+.range{
+	margin: 20px 0;
+}
+/* 去掉默认样式 */
+.range input{
+	-webkit-appearance: none;
+	width: 100%;
+	border: none;
+	left: 0;
+	outline: none;
+}
+.range input:focus{
+	box-shadow: none;
+}
+/* 进度条样式 */
+.range input::-webkit-slider-runnable-track{
+	height: 5px;
+	border-radius: 20px;
+	background-color: #d9d9d9;
+	z-index: 0;
+}  
+/* 滑块样式 */
+.range input::-webkit-slider-thumb{
+	-webkit-appearance: none;
+	height: 13px;
+	width: 13px;
+	margin-top: -4px;
+	background-color: #5ad8a6;
+	border-radius: 50%;
+	cursor: pointer;
 }

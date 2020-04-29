@@ -1,6 +1,11 @@
 // 获取dom
 const remenberBtn = document.querySelector(".remenber-btn")
 const container = document.querySelector(".container")
+const voicesSelect = document.getElementById("voices-select")
+const pitchRange = document.getElementById("pitch")
+const pitchText = document.getElementById("pitch-text")
+const rateRange = document.getElementById("rate")
+const rateText = document.getElementById("rate-text")
 
 var words
 var wordIndex = 0
@@ -11,8 +16,20 @@ var voices
 // 初始化speedAPi
 function getVoices(){
 	voices = synth.getVoices()
-	if(voices.length > 0)
+	console.log(voices)
+	if(voices.length > 0){
+		voices.forEach(voice => {
+			const option = document.createElement("option")
+			option.classList.add("voice")
+			option.value = voice.lang
+			option.innerText = voice.name
+			if(voice.name === "Microsoft Zira Desktop - English (United States)")
+				option.selected = "option"
+			voicesSelect.appendChild(option)
+		})
+		
 		getWords()
+	}
 }
 getVoices()
 if(synth.onvoiceschanged !== undefined)
@@ -62,7 +79,8 @@ function updateContainer(){
 	`
 	
 	signWord()
-	speakWord(word.word)
+	if(voices.length > 0)
+		speakWord(word.word)
 }
 
 // 生/熟词切换
@@ -96,10 +114,16 @@ function changeWord(index){
 
 // 播放单词
 function speakWord(word){
+	if(voices.length === 0){
+		alert("你的浏览器不支持语言播放")
+		return
+	}
 	let speakText = new SpeechSynthesisUtterance(word)
-	speakText.voice = voices[1]
+	console.log(voicesSelect.value)
+	speakText.lang = voicesSelect.value
 	speakText.volume = 1
-	speakText.rate = 0.8
+	speakText.rate = +rateText.innerText
+	speakText.pitch = +pitchText.innerText
 	
 	speakText.onerror = (err) => {
 		console.log(err)
@@ -112,4 +136,14 @@ remenberBtn.onclick = () => {
 	words[wordIndex].remenber = !words[wordIndex].remenber
 	localStort()
 	signWord()
+}
+
+// 监听拖动改变音调/音速
+pitchRange.oninput = (e) => {
+	const val = e.target.value
+	pitchText.innerText = val
+}
+rateRange.oninput = (e) => {
+	const val = e.target.value
+	rateText.innerText = val
 }

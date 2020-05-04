@@ -1,5 +1,8 @@
-# 词汇表
+# 3d旋转卡片
 
-1. txt文本转成json数据
-2. 通过fetch读取数据
-3. 使用speedAPI播放单词
+```css
+/* 父级 */
+transform-style: preserve-3d; // 启动3d
+perspective: 1000px; // 视距
+
+```

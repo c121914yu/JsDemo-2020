@@ -1,11 +1,7 @@
-// 获取dom
-const remenberBtn = document.querySelector(".remenber-btn")
-const container = document.querySelector(".container")
-const voicesSelect = document.getElementById("voices-select")
-const pitchRange = document.getElementById("pitch")
-const pitchText = document.getElementById("pitch-text")
-const rateRange = document.getElementById("rate")
-const rateText = document.getElementById("rate-text")
+const card = document.querySelector(".card")
+const cardFont = card.querySelector(".card-front")
+const cardBack = card.querySelector(".card-back")
+const history = document.querySelector(".history")
 
 var words
 var wordIndex = 0
@@ -17,24 +13,13 @@ var voices
 function getVoices(){
 	voices = synth.getVoices()
 	console.log(voices)
-	if(voices.length > 0){
-		document.querySelector(".voices").style.display = "block"
-		voices.forEach(voice => {
-			const option = document.createElement("option")
-			option.classList.add("voice")
-			option.value = voice.lang
-			option.innerText = voice.name
-			if(voice.name === "Microsoft Zira Desktop - English (United States)")
-				option.selected = "option"
-			voicesSelect.appendChild(option)
-		})
-	}
-	getWords()
+	if(voices.length > 0)
+		getWords()
 }
 getVoices()
 if(synth.onvoiceschanged !== undefined)
   synth.onvoiceschanged = getVoices
-
+	
 // 获取英文单词
 function getWords(){
 	let temp = localStorage.getItem("words")
@@ -59,47 +44,6 @@ function getWords(){
 	}
 }
 
-// 本地存储
-function localStort(){
-	localStorage.setItem("words",JSON.stringify(words))
-}
-
-// 更新container
-function updateContainer(){
-	const word = words[wordIndex]
-	container.innerHTML = 
-	`
-		<h2>${word.word}</h2>
-		<p>
-			${word.voice}
-			<i class="fa fa-volume-down" onclick="speakWord('${word.word}')"></i>
-		</p>
-		<h3 class="open-translate" onclick="showTranslate()">点击查看中文</h3>
-		<h3 class="translate">${word.translate}</h3>
-	`
-	
-	signWord()
-	if(voices.length > 0)
-		speakWord(word.word)
-}
-
-// 生/熟词切换
-function signWord(){
-	if(words[wordIndex].remenber){
-		remenberBtn.innerText = "熟词"
-		remenberBtn.classList.add("remenber")
-	}
-	else{
-		remenberBtn.innerText = "生词"
-		remenberBtn.classList.remove("remenber")
-	}
-}
-// 查看中文
-function showTranslate(){
-	document.querySelector(".open-translate").classList.add("show")
-	document.querySelector(".translate").classList.add("show")
-}
-
 // 切换单词
 function changeWord(index){
 	wordIndex += index
@@ -112,6 +56,50 @@ function changeWord(index){
 	updateContainer()
 }
 
+// 生/熟词切换
+function signWord(){
+	words[wordIndex].remenber = !words[wordIndex].remenber
+	if(words[wordIndex].remenber){
+		history.innerText = "熟词"
+		history.classList.add("remenber")
+	}
+	else{
+		history.innerText = "生词"
+		history.classList.remove("remenber")
+	}
+	localStort()
+}
+
+// 本地存储
+function localStort(){
+	localStorage.setItem("words",JSON.stringify(words))
+}
+
+function updateContainer(){
+	const word = words[wordIndex]
+	cardFont.innerHTML = 
+	`
+		<p>${word.word}</p>
+		<p>
+			${word.voice}
+			<i class="fa fa-volume-down" onclick="speakWord('${word.word}')"></i>
+		</p>
+	`
+	cardBack.innerHTML = 
+	`
+		<p>${word.translate}</p>
+	`
+	if(word.remenber){
+		history.innerText = "熟词"
+		history.classList.add("remenber")
+	}
+	else{
+		history.innerText = "生词"
+		history.classList.remove("remenber")
+	}
+	speakWord(word.word)
+}
+
 // 播放单词
 function speakWord(word){
 	if(voices.length === 0){
@@ -119,11 +107,10 @@ function speakWord(word){
 		return
 	}
 	let speakText = new SpeechSynthesisUtterance(word)
-	console.log(voicesSelect.value)
-	speakText.lang = voicesSelect.value
+	speakText.lang = "en-US"
 	speakText.volume = 1
-	speakText.rate = +rateText.innerText
-	speakText.pitch = +pitchText.innerText
+	speakText.rate = 1
+	speakText.pitch = 1
 	
 	speakText.onerror = (err) => {
 		console.log(err)
@@ -131,19 +118,7 @@ function speakWord(word){
 	synth.speak(speakText)
 }
 
-// 记住了
-remenberBtn.onclick = () => {
-	words[wordIndex].remenber = !words[wordIndex].remenber
-	localStort()
-	signWord()
-}
-
-// 监听拖动改变音调/音速
-pitchRange.oninput = (e) => {
-	const val = e.target.value
-	pitchText.innerText = val
-}
-rateRange.oninput = (e) => {
-	const val = e.target.value
-	rateText.innerText = val
+card.onclick = () => {
+	if(synth.speaking)	return
+	card.classList.toggle("active")
 }

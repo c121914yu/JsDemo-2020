@@ -1,137 +1,83 @@
-/* 滚动条样式 */
-::-webkit-scrollbar{
-	width:10px;
-	height: 7px;
-}
-::-webkit-scrollbar-track{
-	background: rgb(239, 239, 239);
-	border-radius:2px;
-}
-::-webkit-scrollbar-thumb{
-	background-color: #bfbfbf;
-	border-radius:10px;
-}
-::-webkit-scrollbar-thumb:hover{
- background-color: var(--green1);
-}
 *{
 	box-sizing: border-box;
 }
 body{
 	margin: 0;
 	min-height: 100vh;
-	width: 100vw;
-	font-size: 16px;
-	font-family: Arial, Helvetica, sans-serif;
 	display: flex;
-	flex-direction: column;
-	align-items: center;
-	letter-spacing: 0.5px;
-}
-h1{
-    margin-top: 50px;
-	letter-spacing: 1px;
-}
-
-.card{
-	width: 80%;
-	max-width: 350px;
+	justify-content: center;
 	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
 }
-.card .container{
-	padding: 5px 0;
+
+.container{
+	margin-top: 20%;
+}
+
+.cards{
+	perspective: 1000px;
+	transform-style: preserve-3d;
+}
+.cards .card{
+	width: 400px;
+	height: 200px;
 	background-color: #FFFFFF;
-	border-radius: 5px;
-	box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+	box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: 1s;
+	position: relative;
+	transform: rotateY(0);
 }
-.card .container i{
-	color: #5d7092;
-	font-size: 1.2em;
-	margin-left: 10px;
+.cards .card.active{
+	transform: rotateY(180deg);
 }
-
-.card .container .open-translate{
-	color: #909399;
+.cards .card .content{
+	position: absolute;
+	transition: 1s;
+	cursor: default;
+}
+.cards .card.active .content.card-front{
+	opacity: 0;
+}
+.cards .card .content.card-back{
+	opacity: 0;
+	transform: rotateY(180deg);
+}
+.cards .card.active .content.card-back{
+	opacity: 1;
+}
+.cards .card .content p{
+	display: flex;
+	position: relative;
+}
+.cards .card .content p i{
+	position: absolute;
+	right: -20px;
 	cursor: pointer;
-}
-.card .container .translate,
-.card .container .open-translate.show{
-	display: none;
-}
-.card .container .translate.show{
-	display: block;
+	z-index: 10;
 }
 
-.card .btns{
+.buttons{
 	margin-top: 15px;
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: space-around;
 }
-.card .btns button{
-	width: 25%;
-	border: 0;
-	outline: none;
+.buttons i{
+	font-size: 1.5em;
+	cursor: pointer;
+}
+.buttons .history{
 	color: #FFFFFF;
-	border-radius: 5px;
-	padding: 5px 0;
-	cursor: pointer;
-	transition: 0.1s;
-}
-.card .btns button:active{
-	transform: scale(0.9);
-}
-.card .btns button.last-btn,
-.card .btns button.next-btn
-{
-	background-color: #5b8ff9;
-}
-.card .btns button.remenber-btn{
+	padding: 5px 15px;
 	background-color: #e86452;
-}
-.card .btns button.remenber-btn.remenber{
-	background-color: #5ad8a6;
-}
-
-
-.voices{
-	display: none;
-	margin-top: 20px;
-}
-.voices select{
-	padding: 5px;
-	border-radius: 5px;
-	outline: none;
-}
-
-.range{
-	margin: 20px 0;
-}
-/* 去掉默认样式 */
-.range input{
-	-webkit-appearance: none;
-	width: 100%;
-	border: none;
-	left: 0;
-	outline: none;
-}
-.range input:focus{
-	box-shadow: none;
-}
-/* 进度条样式 */
-.range input::-webkit-slider-runnable-track{
-	height: 5px;
-	border-radius: 20px;
-	background-color: #d9d9d9;
-	z-index: 0;
-}  
-/* 滑块样式 */
-.range input::-webkit-slider-thumb{
-	-webkit-appearance: none;
-	height: 13px;
-	width: 13px;
-	margin-top: -4px;
-	background-color: #5ad8a6;
-	border-radius: 50%;
+	border-radius: 4px;
 	cursor: pointer;
+}
+.buttons .history.remenber{
+	background-color: #5ad8a6;
 }

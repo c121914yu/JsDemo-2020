@@ -4,27 +4,21 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>旋转卡片</title>
-	<link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.13.0/css/all.css" rel="stylesheet">
+	<title>歌词搜索</title>
 	<link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
-	<div class="container">
-		<h1>单词卡片</h1>
-		<div class="cards">
-			<div class="card">
-				<!-- 正面 -->
-				<div class="content card-front"></div>
-				<!-- 背面 -->
-				<div class="content card-back"></div>
-			</div>
-		</div>
-		<div class="buttons">
-			<i class="fas fa-arrow-left" onclick="changeWord(1)"></i>
-			<div class="history" onclick="signWord()"></div>
-			<i class="fas fa-arrow-right" onclick="changeWord(-1)"></i>
-		</div>
+	<header>
+		<h1>歌词搜索APP</h1>
+		<form id="form">
+			<input type="text" id="search" placeholder="输入歌手或歌曲名" autocomplete="off">
+			<button id="search-btn" type="submit">搜索</button>
+		</form>
+	</header>
+	<div id="result" class="container">
+		<p>搜索结果</p>
 	</div>
+	<div class="more" id="more"></div>
 </body>
 <script src="index.js" type="text/javascript" charset="utf-8"></script>
 </html>

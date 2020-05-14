@@ -14,3 +14,4 @@
 12. 打字游戏 - play_word_game
 13. 文字转语言 - speed_api
 14. 词汇表 - word_table
+15. 旋转卡片 - rotate_card

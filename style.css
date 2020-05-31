@@ -1,85 +1,108 @@
 *{
 	box-sizing: border-box;
+}
+body{
 	margin: 0;
-	padding: 0;
+	height: 100vh;
+	background: url(bg.jpg) no-repeat center center/cover;
+	overflow: hidden;
+	color: #FFFFFF;
+	font-family: Arial, Helvetica, sans-serif;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
-body{
-	background-color: #f9fafb;
-	font-family: Arial, Helvetica, sans-serif;
+h1{
+	margin-top: 50px;
+}
+.container{
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	min-height: 100vh;
-}
-
-.container{
-	width: 400px;
-	background-color: #ffffff;
-	border-radius: 5px;
-	box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
-
-h2{
-	text-align: center;
-	margin: 0 0 20px;
-}
-
-.form{
-	padding: 30px 40px;
-}
-
-.form .form-control{
-	margin-bottom: 10px;
-	padding-bottom: 20px;
+	margin: auto;
+	height: 300px;
+	width: 300px;
 	position: relative;
+	transform: scale(1);
 }
-.form .form-control label{
-	color: #777777;
-	display: block;
-	margin-bottom: 5px;
-}
-.form .form-control input{
+.circle{
+	background-color: #010f1c;
 	width: 100%;
-	border: 2px solid #f0f0f0;
-	border-radius: 4px;
-	display: block;
-	padding: 10px;
-	font-size: 14px;
-}
-
-.form .form-control input:focus{
-	border-color: #777777;
-	outline: none;
-}
-.form .form-control.error input{
-	border-color: #e74c3c;
-}
-.form .form-control.success input{
-	border-color: #2ecc71;
-}
-
-.form .form-control small{
-	color: #E74C3C;
+	height: 100%;
+	border-radius: 50%;
 	position: absolute;
-	bottom: 0;
+	top: 0;
 	left: 0;
-	/* 视觉消失 */
-	visibility: hidden;
+	z-index: -1;
 }
-.form .form-control.error small{
-	visibility: visible;
+/* 外边框 */
+.gradient-circle{
+	/* 锥形界面 */
+	background: conic-gradient(
+		#55b7a4 0%,
+		#4ca493 40%,
+		#fff 40%,
+		#fff 60%,
+		#336d62 60%,
+		#2a5b52 100%
+	);
+	/* 外边框10px */
+	height: 320px;
+	width: 320px;
+	border-radius: 50%;
+	position: absolute;
+	top: -10px;
+	left: -10px;
+	z-index: -2;
+}
+/* 外原点 */
+.pointer-container{
+	position: absolute;
+	/* 外边框共320px,圆顶部距离外边框30px, 所以两者间距10px*/
+	top: -40px;
+	left: 140px;
+	width: 20px;
+	/* 150+40 */
+	height: 190px;
+	transform-origin: bottom center; 
+	animation: rotate 7.5s linear forwards infinite;
+}
+.pointer{
+	width: 20px;
+	height: 20px;
+	background-color: #FFFFFF;
+	border-radius: 50%;
+	display: block;
+}
+@keyframes rotate{
+	from{
+		transform: rotate(0deg);
+	}
+	to{
+		transform: rotate(360deg);
+	}
 }
 
-.form button{
-	cursor: pointer;
-	background-color: #3498db;
-	border: 2px solid #3498db;
-	border-radius: 4px;
-	color: #FFFFFF;
-	display: block;
-	font-size: 16px;
-	padding: 10px;
-	margin-top: 20px;
-	width: 100%;
+.container.grow{
+	animation: grow 3s linear forwards;
+}
+@keyframes grow{
+	from{
+		transform: scale(1);
+	}
+	to{
+		transform: scale(1.2);
+	}
+}
+.container.shrink{
+	animation: shrink 3s linear forwards;
+}
+@keyframes shrink{
+	from{
+		transform: scale(1.2);
+	}
+	to{
+		transform: scale(1);
+	}
 }

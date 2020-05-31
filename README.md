@@ -15,3 +15,5 @@
 13. 文字转语言 - speed_api
 14. 词汇表 - word_table
 15. 旋转卡片 - rotate_card
+16. 歌词搜索 - music_lyrics
+17. 呼吸小动画 - breathe_animation

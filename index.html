@@ -4,24 +4,20 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>呼吸动画</title>
+	<title>打砖块游戏</title>
 	<link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
-	<h1>呼吸放松一下</h1>
-	<div class="container" id="container">
-		<div class="circle"></div>
-		
-		<p id="text"></p>
-		
-		<div class="pointer-container">
-			<span class="pointer"></span>
-		</div>
-		
-		<div class="gradient-circle">
-			
-		</div>
+	<h1>2D打砖块游戏</h1>
+	<button id="rules-btn" class="btn rules-btn">阅读规则</button>
+	<div class="rules" id="rules">
+		<p>使用左右移动挡板接住小球</p>
+		<p>如果没有接住小球游戏会自动重启</p>
+		<button id="close-btn" class="btn">关闭</button>
 	</div>
+	
+	<canvas id="canvas" width="800" height="600"></canvas>
+	
 	<script src="index.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

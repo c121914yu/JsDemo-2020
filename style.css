@@ -4,105 +4,58 @@
 body{
 	margin: 0;
 	height: 100vh;
-	background: url(bg.jpg) no-repeat center center/cover;
-	overflow: hidden;
-	color: #FFFFFF;
-	font-family: Arial, Helvetica, sans-serif;
+	background-color: #0095dd;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-}
-
-h1{
-	margin-top: 50px;
-}
-.container{
-	display: flex;
-	align-items: center;
 	justify-content: center;
-	margin: auto;
-	height: 300px;
-	width: 300px;
-	position: relative;
-	transform: scale(1);
+	overflow: hidden;
+	font-family: Arial, Helvetica, sans-serif;
 }
-.circle{
-	background-color: #010f1c;
-	width: 100%;
-	height: 100%;
-	border-radius: 50%;
+h1{
+	font-size: 45px;
+	color: #FFFFFF;
+}
+canvas{
+	background-color: #FFFFFF;
+	display: block;
+	border-radius: 5px;
+}
+.btn{
+	cursor: pointer;
+	border: 0;
+	padding: 10px 20px;
+	border-radius: 5px;
+	background-color: #000000;
+	color: #FFFFFF;
+}
+.btn:focus{
+	outline: 0;
+}
+.btn:hover{
+	background-color: #222;
+}
+.btn:active{
+	transform: scale(0.98);
+}
+.rules-btn{
+	position: absolute;
+	top: 30px;
+	left: 30px;
+}
+.rules{
 	position: absolute;
 	top: 0;
 	left: 0;
-	z-index: -1;
+	background-color: #333333;
+	width: 200px;
+	min-height: 100vh;
+	padding: 20px;
+	line-height: 1.5;
+	color: #FFFFFF;
+	transform: translateX(-200px);
+	transition: transform 1s ease-in-out;
 }
-/* 外边框 */
-.gradient-circle{
-	/* 锥形界面 */
-	background: conic-gradient(
-		#55b7a4 0%,
-		#4ca493 40%,
-		#fff 40%,
-		#fff 60%,
-		#336d62 60%,
-		#2a5b52 100%
-	);
-	/* 外边框10px */
-	height: 320px;
-	width: 320px;
-	border-radius: 50%;
-	position: absolute;
-	top: -10px;
-	left: -10px;
-	z-index: -2;
-}
-/* 外原点 */
-.pointer-container{
-	position: absolute;
-	/* 外边框共320px,圆顶部距离外边框30px, 所以两者间距10px*/
-	top: -40px;
-	left: 140px;
-	width: 20px;
-	/* 150+40 */
-	height: 190px;
-	transform-origin: bottom center; 
-	animation: rotate 7.5s linear forwards infinite;
-}
-.pointer{
-	width: 20px;
-	height: 20px;
-	background-color: #FFFFFF;
-	border-radius: 50%;
-	display: block;
-}
-@keyframes rotate{
-	from{
-		transform: rotate(0deg);
-	}
-	to{
-		transform: rotate(360deg);
-	}
-}
-
-.container.grow{
-	animation: grow 3s linear forwards;
-}
-@keyframes grow{
-	from{
-		transform: scale(1);
-	}
-	to{
-		transform: scale(1.2);
-	}
-}
-.container.shrink{
-	animation: shrink 3s linear forwards;
-}
-@keyframes shrink{
-	from{
-		transform: scale(1.2);
-	}
-	to{
-		transform: scale(1);
-	}
+.rules.show{
+	transform: translateX(0);
 }

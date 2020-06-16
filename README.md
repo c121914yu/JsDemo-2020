@@ -7,6 +7,8 @@ header *{
 }
 ```
 ```js
+// 跨域地址
+const cors = 'https://cors-anywhere.herokuapp.com/'
 // 接口地址
 const apiUrl = "https://api.lyrics.ovh"
 // 搜索接口
